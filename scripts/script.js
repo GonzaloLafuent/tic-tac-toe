@@ -23,7 +23,7 @@ function createPlayer(figure){
 
     const setPlayCode = (code)=>{play_code.push(code)};
 
-    const getPlayCode = (code)=>{play_code};
+    const getPlayCode = (code)=>{return play_code};
 
     return{
         getFigure,setPlayCode,getPlayCode
@@ -31,25 +31,47 @@ function createPlayer(figure){
 }
 
 const gameController = (function(){
-    let player_turn = "X";
-
     const player_1 = createPlayer("X");
     const player_2 = createPlayer("O");
 
-    const get_turn =() =>{return player_turn}
+    let player_turn = player_1;
 
-    const change_turn = ()=> {player_turn=player_turn==="X"?"O":"X"}
+    const getTurn =() =>{return player_turn}
 
-    const player1Win = ()=>{
-        return player_1.getPlayCode.every((code)=>{gameBoard.winningCombinatios.includes(code)})
+    const changeTurn = ()=> {player_turn=player_turn===player_1?player_2:player_1}
+
+    const playerWin = ()=>{
+        return player_turn.getPlayCode().every((code)=>{gameBoard.winningCombinatios.includes(code)})
     }
 
-    const player2Win = ()=>{
-        return player_1.getPlayCode.every((code)=>{gameBoard.winningCombinatios.includes(code)})
-    }
     return{
-        change_turn,get_turn,player1Win,player2Win
+        changeTurn,getTurn,playerWin
     }
 })();
+
+const doomController =(function(){
+    const boxes = document.querySelectorAll(".cuadrado");
+    const text_winner= document.querySelector("h2");
+    function addBoxController(){
+        boxes.forEach(box => {
+            box.addEventListener("click",(e)=>{
+                box.textContent = gameController.getTurn().getFigure();
+                gameController.getTurn().setPlayCode(e.target.dataset.value);
+                if(gameController.playerWin()) text_winner.textContent = "gano" + gameController.getTurn().getFigure(); 
+                gameController.changeTurn();
+            })
+        });
+    }
+
+    const activate = ()=>{
+        addBoxController();
+    }
+
+    return{
+        activate
+    }
+})();
+
+doomController.activate()
 
 
