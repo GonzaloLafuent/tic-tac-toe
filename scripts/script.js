@@ -35,8 +35,10 @@ function createPlayer(figure){
 
     const getPlayCode = (code)=>{return play_code};
 
+    let restartPlayCode = ()=>{play_code=[]};
+
     return{
-        getFigure,setPlayCode,getPlayCode
+        getFigure,setPlayCode,getPlayCode,restartPlayCode
     }
 }
 
@@ -50,6 +52,8 @@ const gameController = (function(){
 
     const changeTurn = ()=> {player_turn=player_turn===player_1?player_2:player_1}
 
+    const restartPlayers = () => {player_1.restartPlayCode(); player_2.restartPlayCode();}
+
     const playerWin = ()=>{
         return gameBoard.winningCombinatios.some((combination)=>{
             return combination.split("").every((code)=>{
@@ -59,13 +63,15 @@ const gameController = (function(){
     }
 
     return{
-        changeTurn,getTurn,playerWin
+        changeTurn,getTurn,playerWin,restartPlayers
     }
 })();
 
 const domController =(function(){
     const boxes = document.querySelectorAll(".cuadrado");
-    const text_winner= document.querySelector("h3");
+    const text_winner= document.querySelector(".txt-winner");
+    const btn_restart = document.querySelector("#btn-restart");
+
     function addBoxController(){
         boxes.forEach(box => {
             box.addEventListener("click",(e)=>{
@@ -84,8 +90,20 @@ const domController =(function(){
         });
     }
 
+    function addBtnRestart(){
+        btn_restart.addEventListener("click",()=>{
+            gameBoard.restartGame();    
+            gameController.restartPlayers();
+            text_winner.textContent = "";
+            boxes.forEach(box => {
+                box.textContent = "";
+            });
+        });
+    }
+
     const activate = ()=>{
         addBoxController();
+        addBtnRestart();
     }
 
     return{

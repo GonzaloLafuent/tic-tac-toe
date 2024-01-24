@@ -3,6 +3,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: 'Courier New', Courier, monospace;
 }
 
     .tablero{
@@ -10,10 +11,16 @@ body{
         grid: repeat(3,10vw)/repeat(3,10vw);
         gap:5px;
         border: 2px solid black;
+        background-color: blueviolet;
         padding: 20px;
     }
 
         .cuadrado{
-            border: 2px solid red;
+            background-color: aliceblue;
+            border: 2px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 200%;
         }
 
