@@ -3,16 +3,26 @@ console.log(cuadrado.dataset.value);
 
 const gameBoard = (function(){
     let board = [0,0,0,0,0,0,0,0,0];
-    const winningCombinatios = ["012","345","678"];
+    const winningCombinatios = ["012","345","678","048","246","036","147","258"];
+    let end = false;
 
     const setMovement = (position) => {board[position]=1};
 
-    const restartGame = ()=>{board = [0,0,0,0,0,0,0,0,0];}
+    const validMovement = (position) =>{return board[position]==1?false:true}
+
+    const restartGame = ()=>{
+        board = [0,0,0,0,0,0,0,0,0];
+        end = false;
+    }
 
     const fullBoard = ()=>{return board.every((e)=>{e===1})};
 
+    const finish = ()=>{end=true}
+
+    const isfinish = ()=>{return end}
+
     return{
-        setMovement,restartGame,fullBoard,winningCombinatios
+        setMovement,restartGame,fullBoard,validMovement,isfinish,finish,winningCombinatios
     }
 })();
 
@@ -59,13 +69,17 @@ const domController =(function(){
     function addBoxController(){
         boxes.forEach(box => {
             box.addEventListener("click",(e)=>{
-                box.textContent = gameController.getTurn().getFigure();
-                gameBoard.setMovement(e.target.dataset.value);
-                gameController.getTurn().setPlayCode(e.target.dataset.value);
-                console.log(e.target.dataset.value);
-                console.log(gameController.getTurn().getPlayCode());
-                if(gameController.playerWin()) text_winner.textContent = "gano" + gameController.getTurn().getFigure(); 
-                gameController.changeTurn();
+                if(gameBoard.validMovement(e.target.dataset.value) && !gameBoard.isfinish()){
+                    box.textContent = gameController.getTurn().getFigure();
+                    gameBoard.setMovement(e.target.dataset.value);
+                    gameController.getTurn().setPlayCode(e.target.dataset.value);
+
+                    if(gameController.playerWin()){ 
+                        text_winner.textContent = "gano " + gameController.getTurn().getFigure();
+                        gameBoard.finish();
+                    } else gameController.changeTurn();      
+
+                }    
             })
         });
     }
