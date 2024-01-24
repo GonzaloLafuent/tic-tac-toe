@@ -29,6 +29,7 @@ body{
         display: flex;
         justify-content: center;
         align-items: center;
+        font-weight: bolder;
         width: 40vw;
         height: 10vh;
     }

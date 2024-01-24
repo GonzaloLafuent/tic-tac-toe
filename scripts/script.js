@@ -81,7 +81,7 @@ const domController =(function(){
                     gameController.getTurn().setPlayCode(e.target.dataset.value);
 
                     if(gameController.playerWin()){ 
-                        text_winner.textContent = "gano " + gameController.getTurn().getFigure();
+                        text_winner.textContent = "El Ganador es: " + gameController.getTurn().getFigure() + "!";
                         gameBoard.finish();
                     } else gameController.changeTurn();      
 
