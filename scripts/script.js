@@ -1,6 +1,3 @@
-const cuadrado = document.querySelector(".cuadrado");
-console.log(cuadrado.dataset.value);
-
 const gameBoard = (function(){
     let board = [0,0,0,0,0,0,0,0,0];
     const winningCombinatios = ["012","345","678","048","246","036","147","258"];
